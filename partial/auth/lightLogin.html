@@ -1,0 +1,19 @@
+<form id="loginForm" class="loginForm">
+	<div id="loginInfoPanel" class="panel panel-danger">
+		<div class="panel-heading">Error</div>
+		<div class="panel-body"></div>
+	</div>
+	<fieldset class="body">
+		<fieldset>
+			<label for="username">Username</label> <input type="text"
+				name="username" id="username" />
+		</fieldset>
+		<fieldset>
+			<label for="password">Password</label> <input type="password"
+				name="password" id="password" ng-keypress="autologin($event)" />
+		</fieldset>
+		<label for="checkbox"><input type="checkbox" id="checkbox" class="logincheckbox">
+			<i>Remember me</i></label>
+	</fieldset>
+	<span><a href="#">Forgot your password?</a></span>
+</form>

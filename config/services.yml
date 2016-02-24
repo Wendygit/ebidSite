@@ -1,0 +1,37 @@
+imports:
+    - { resource: parameters.yml }
+        
+services:
+    db:
+        class:     ebid\Db\mysql
+        arguments: [%database_host%, %database_user%, %database_password%, %database_name%, %database_prefix%]
+    EventDispatcher:
+        class:     Symfony\Component\EventDispatcher\EventDispatcher
+    Session:
+        class:     Symfony\Component\HttpFoundation\Session\Session
+    ControllerResolver:
+        class:     Symfony\Component\HttpKernel\Controller\ControllerResolver
+    HttpKernel:
+        class:     Symfony\Component\HttpKernel\HttpKernel
+        arguments: [@EventDispatcher, @ControllerResolver]
+    MySQLParser:
+        class:     ebid\Db\MySQLParser
+        arguments: [@db]        
+    UserProvider:
+        class:     ebid\Auth\UserProvider
+        arguments: [@MySQLParser]
+    MessageDigestPasswordEncoder:
+        class:     Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder
+        arguments: ["sha512", true, 5000]
+    Firebase:
+        class:     ebid\firebase\Firebase
+        arguments: [%firebase_url%, @FirebaseTokeGenerator]
+    FirebaseTokeGenerator:
+        class:     ebid\firebase\FirebaseTokenGenerator
+        arguments: [%firebase_API%]
+    SmtpTransport:
+        class:     Swift_SmtpTransport
+        arguments: [%mail_host%, %mail_port%, %encryption%]
+    swiftMailer:
+        class:     Swift_Mailer
+        arguments: [@SmtpTransport]

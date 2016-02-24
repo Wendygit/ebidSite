@@ -1,0 +1,251 @@
+<ol class="breadcrumb">
+    <li><a href="#/">Home</a></li>
+    <li class="active">{{product.pname}}</li>
+</ol>
+<div class="row">
+	<div class="col-md-12">
+		<h1 class="title">{{product.pname}}</h1>
+        <div ng-if="product.isBid == true && price.winner != userId" class="alert alert-warning alert-dismissible top10 messagebox" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong>Warning!</strong> Your are out of bidding. Please enter a higher price.
+        </div>
+        <div ng-if="product.isBid == true && price.winner == userId" class="alert alert-success alert-dismissible top10 messagebox" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong>Success!</strong> Congratulation, your price is the highest price right now. Happy bidding.
+        </div>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-5">
+		<div class="productImgBox">
+            <img id="productImg"
+                 ng-src="{{product.defaultImage}}"
+                 data-zoom-image="{{toBigImg(product.defaultImage)}}"
+                 ng-elevate-zoom
+                 k-option='ImageZoomConfig' />
+		</div>
+
+		<div id="productGallery" class="img_gallery">
+            <slick init-onload="true" data="product.imageLists" infinite="false" slides-to-show="3" slides-to-scroll="1" class="slider multiple-items">
+               <div class="imgView thumbnail" ng-repeat="image in product.imageLists">
+                    <a href="javascript:void(0);"
+                       data-image="{{image}}"
+                       data-zoom-image="{{toBigImg(image)}}">
+                    <img ng-src="{{image}}" />
+                 </a>
+               </div>
+            </slick>
+            <div class="clearfix"></div>
+        </div>
+	</div>
+	<div class="col-md-7">
+
+		<div class="row">
+			<div class="col-md-8">
+				<div class="well well-lg">
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Item condition:</div>
+							<div class="col-md-8">
+								<b>{{product.condition}}</b>
+							</div>
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Time left:</div>
+							<div class="col-md-4">
+								<b id="timeReminder">{{product.remaining}}</b>
+							</div>
+							<div class="col-md-4">
+								[ <a href="javascript:void(0);">{{price.bidNumber}} bids</a>]
+							</div>
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Current bid:</div>
+							<div class="col-md-4">
+								<div>
+									<b class="pricecurrency">US {{getPriceCurrency(price.currentPrice)}}</b>
+								</div>
+								<div class="list-item">
+									<input id="bidTextbox" type="text" kendo-numeric-text-box
+										k-options="{format: 'c'}"
+										k-ng-model="product.bidPrice" style="width: 100px" />
+								</div>
+								<div class="list-item small-text">Enter US
+									{{getPriceCurrency(product.userMinPrice)}} or more</div>
+
+							</div>
+							<div class="col-md-4" ng-if="userId != product.seller.uid">
+								<div class="row">
+									<div class="col-xs-12">
+										<button type="button" class="btn btn-primary"
+											ng-click="placebid()">
+											<b>Place bid</b>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Shipping:</div>
+							<div class="col-md-8">
+								<b>{{product.shippingCost}}</b> {{product.shippingType}}
+							</div>
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Payments:</div>
+							<div class="col-md-8">
+								<span><img
+									src="images/logoPayPal.png" /></span>
+								<span><img
+									src="images/CC_icons.png" /></span>
+							</div>
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="row">
+							<div class="col-md-4 text">Returns:</div>
+							<div class="col-md-8">14 days money back, you pay return
+								shipping</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-md-12">
+                    <img src="images/dealsweek.png" width="400px" />
+                </div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<strong>seller information</strong>
+					</div>
+					<div class="panel-body">
+						<div class="list-item">{{product.seller.username}}</div>
+						<div class="list-item">{{product.seller.email}}</div>
+					</div>
+				</div>
+
+                <div class="panel panel-success bid-history">
+                    <div class="panel-heading">
+                        <strong>Bid History</strong>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>User</th>
+                                <th>Price</th>
+                            </tr>
+                            <tr ng-repeat="history in histories | reverse | limitTo:4 ">
+                                <td>{{history.username}}</td>
+                                <td>{{history.price}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ul id="detail_tab" class="nav nav-tabs">
+            <li class="active"><a href="#description"
+                                  data-toggle="description" show-tab><i class="description"></i>Description</a></li>
+            <li><a href="#Shipping" data-toggle="tab" show-tab><i
+                    class="Shipping"></i>Shipping and payments</a></li>
+            <li><a href="#History" data-toggle="tab" show-tab><i
+                    class="history"></i>Bidding History</a></li>
+		</ul>
+		<div id="detail_tab_content" class="tab-content">
+			<div class="tab-pane fade in active" id="description">
+				<div class="content">
+					<!-- content begin -->
+                    <iframe id="descriptionContent" ng-src="{{descriptionURL}}" iframe-onload />
+					<!-- content end -->
+				</div>
+			</div>
+			<div class="tab-pane fade" id="Shipping">
+				<div class="loading"></div>
+                <div class="content">
+                    <h3>Seller assumes all responsibility for this listing.</h3>
+                </div>
+			</div>
+            <div class="tab-pane fade" id="History">
+                <div class="loading"></div>
+                <div class="content">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>User</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr ng-repeat="history in histories | reverse  ">
+                            <td>{{history.username}}</td>
+                            <td>{{history.price}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+		</div>
+
+	</div>
+</div>
+
+
+<div class="row top20">
+<div class="col-xs-12">
+	<div class="panel panel-default">
+		<!-- Default panel contents -->
+		<div class="panel-heading">Customer Reviews</div>
+
+		<!-- List group -->
+		<ul class="list-group" ng-repeat="comment in comments">
+			<li class="list-group-item">
+				<div class="panel-body">
+					<dl>
+						<dt>
+							{{comment.title}} <small>{{comment.time}}</small>
+						</dt>
+						<span class="txtsmall gry">By {{comment.name}}</span>
+						<br />
+						<dd><div ng-bind="comment.content"></div></dd>
+					</dl>
+				</div></li>
+
+		</ul>
+        <button type="button" id="myButton" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">Write a customer review</button>
+	</div>
+</div>
+</div>
+
+<div id="commentModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Write comment</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="comment_title">Title:</label>
+                    <input type="text" name="comment_title" id="comment_title" class="form-control" ng-model="user.commentTitle" />
+                </div>
+                <div class="form-group">
+                        <label for="comment_content">Comment</label>
+                        <textarea class="form-control" rows="10" cols="30" style="height: 250px;resize: none;" name="comment_content" id="comment_content" ng-model="user.commentContent" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="save_comment()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

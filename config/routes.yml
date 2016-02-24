@@ -1,0 +1,110 @@
+default:
+    path:     /
+    defaults: { _controller: 'ebid\Controller\IndexController::DefaultAction' }
+
+islogin:
+    path:     /auth/islogin
+    defaults: { _controller: 'ebid\Controller\AuthController::isloginAction' }
+    
+login:
+    path:     /auth/login
+    defaults: { _controller: 'ebid\Controller\AuthController::loginAction' }
+
+logout:
+    path:     /auth/logout
+    defaults: { _controller: 'ebid\Controller\AuthController::logoutAction' }
+        
+admin:
+    path:     /admin
+    defaults: { _controller: 'ebid\Controller\adminController::indexAction'}
+
+admin_success:
+    path:     /admin/success
+    defaults: { _controller: 'ebid\Controller\adminController::successAction'}
+    
+admin_logout:
+    path:     /admin/logout
+    defaults: { _controller: 'ebid\Controller\testController::foo1Action'}
+    
+ajax_autocomplete:
+    path:     /ajax/autoCompleteProducts
+    defaults: { _controller: 'ebid\Controller\AjaxController::autoCompleteProductsAction'}
+
+ajax_findProducts:
+    path:    /ajax/findProducts
+    defaults: { _controller: 'ebid\Controller\AjaxController::findProductsAction'}
+
+ajax_getProductById:
+    path:     /ajax/getProductById/{itemId}
+    defaults: { _controller: 'ebid\Controller\AjaxController::getProductByIdAction'}
+
+ajax_getDetail:
+    path:     /ajax/getDetail
+    defaults: { _controller: 'ebid\Controller\AjaxController::getDetailAction'}
+
+ajax_commingsoonProductList:
+    path:     /ajax/commingsoonProductList/{size}
+    defaults: { _controller: 'ebid\Controller\AjaxController::commingsoonProductListAction', size: 10}
+
+ajax_hotBiddingProductList:
+    path:    /ajax/hotBiddingProductList/{size}
+    defaults: { _controller: 'ebid\Controller\AjaxController::hotBiddingProductListAction', size: 10}
+    
+register:
+    path:     /user/register
+    defaults: { _controller: 'ebid\Controller\UserController::registerAction'}
+    methods:  ['POST']
+
+userInfo:
+    path:     /user/index/{size}
+    defaults: { _controller: 'ebid\Controller\UserController::IndexAction', size: 3}
+
+upload:
+    path:     /ajax/upload
+    defaults: { _controller: 'ebid\Controller\AjaxController::uploadAction'}
+
+uploadRemove:
+    path:     /ajax/upload/remove
+    defaults: { _controller: 'ebid\Controller\AjaxController::uploadRemoveAction'}
+
+getCategory:
+    path:     /ajax/getCategory
+    defaults: { _controller: 'ebid\Controller\AjaxController::getCategoryAction'}
+
+getCategoryHierarchy:
+    path:     /ajax/getCategoryHierarchy
+    defaults: { _controller: 'ebid\Controller\AjaxController::getCategoryHierarchyAction'}
+
+getProductByCategory:
+    path:     /ajax/getProductByCategory/{categoryId}
+    defaults: { _controller: 'ebid\Controller\AjaxController::getProductByCategoryAction', categoryId: 'all'}
+
+ProductAdd:
+    path:     /product/add
+    defaults: { _controller: 'ebid\Controller\ProductController::addAction'}
+
+ProductEditGet:
+    path:     /product/{itemId}/edit
+    defaults: { _controller: 'ebid\Controller\ProductController::editGetAction'}
+    methods:  ['GET']
+
+ProductEditPost:
+    path:     /product/{itemId}/edit
+    defaults: { _controller: 'ebid\Controller\ProductController::editPostAction'}
+    methods:  ['POST']
+
+ProductInfo:
+    path:     /product/item/{itemId}
+    defaults: { _controller: 'ebid\Controller\ProductController::itemAction'}
+
+ProductBid:
+    path:     /product/item/{itemId}/bid/{price}
+    defaults: { _controller: 'ebid\Controller\ProductController::bidAction'}
+
+ProductResult:
+    path:     /product/item/{itemId}/result
+    defaults: { _controller: 'ebid\Controller\ProductController::resultAction'}
+
+ProductDescription:
+    path:    /product/item/{itemId}/description
+    defaults: { _controller: 'ebid\Controller\ProductController::descriptionAction'}

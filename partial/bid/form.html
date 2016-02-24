@@ -1,0 +1,143 @@
+
+<div class="container top20">
+    <ol class="breadcrumb">
+        <li><a href="#/">Home</a></li>
+        <li><a href="#/user">User</a></li>
+        <li class="active">Sell</li>
+    </ol>
+	<form class="bidForm" name="bidForm" role="form" ng-submit="submit()">
+
+		<div class="well clearfix">
+			<div class="form-horizontal form-widgets col-lg-12">
+				<fieldset>
+					<legend>Item Information</legend>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ProductName">Name</label>
+						<div class="col-md-10">
+							<input id="ProductName" type="text" class="k-content" ng-model="product.pname" required  kendo-auto-complete  k-options="ProductNameAutoCompleteOptions" />
+							<script id="ProductNameAutoCompleteTemplate" type="text/x-kendo-template">
+							<div class="row">
+								<div class="col-md-2">
+									<div><img  src="#= galleryURL #" /></div>
+								</div>
+        						<div class="col-md-8">
+            						<div>#= data.title #</div>
+        						</div>
+							</div>
+    						</script>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="pictures">Photos</label>
+						<div class="col-md-10">
+                            <div>
+                                <input id="pictures" name="images[]" type="file" kendo-upload k-options="uploadPicturesOptions" />
+                            </div>
+						</div>
+					</div>
+                    <div class="form-group" ng-if="product.defaultImage != null">
+                        <label class="col-md-2 control-label">Default Image</label>
+                        <div class="col-md-10">
+                            <img ng-src="{{product.defaultImage}}" ng-model="product.defaultImage" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Preview</label>
+                        <div class="col-md-10">
+                            <div class="imagePreview">
+                                <div class="row">
+                                    <div kendo-list-view id="imageslistView" class="k-widget k-listview" k-data-source="Imageslistsource" k-template='imagelistViewTemplate'></div>
+                                    <script type="text/x-kendo-angular-template" id="imagepreviewtemplate">
+                                        <div class="col-md-3 imageViewer" ng-mouseover="hover = true" ng-mouseleave="hover = false">
+                                            <img ng-src="{{dataItem.ImageURL}}" alt=" {{dataItem.ImageName}}"  />
+                                            <button type="button" class="btn btn-primary default" ng-class="{show: hover}"  ng-click="ImageDefault(dataItem.ImageName, dataItem.ImageURL)" >Default</button>
+                                            <button type="button" class="btn btn-danger delete" ng-class="{show: hover}"  ng-click="ImageDelete(dataItem.ImageName, dataItem.targetUid)">Delete</button>
+                                        </div>
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="Details">Details</label>
+						<div class="col-md-10">
+							<textarea id="Details" kendo-editor ng-model="product.description" rows="10" cols="30" style="height: 350px"></textarea>
+						</div>
+					</div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="lists">Condition</label>
+                        <div class="col-md-10">
+                            <input id="lists" kendo-drop-down-list k-data-text-field="'conditionName'" k-data-value-field="'conditionId'"
+                                   k-data-source="conditionType" required style="width: 153px" ng-model="product.condition" />
+                        </div>
+                    </div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="lists">List as</label>
+						<div class="col-md-10">
+							<input id="lists" kendo-drop-down-list k-data-text-field="'listas'" k-data-value-field="'listId'"
+            					k-data-source="bidType" required style="width: 153px" ng-model="product.auction" />
+						</div>
+					</div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="categoryas">Category</label>
+                        <div class="col-md-10">
+                            <input id="categoryas" kendo-drop-down-list k-data-text-field="'categoryName'" k-data-value-field="'categoryId'"
+                                   k-data-source="categoryType" required style="width: 153px"  ng-model="product.categoryId" />
+                        </div>
+                    </div>
+
+					<div id="startPriceForm" class="form-group">
+						<label class="col-md-2 control-label" for="startprice">Start
+							Price</label>
+						<div class="col-md-10">
+							<input id="startprice" required placeholder="ex. $10.98" ng-model="product.startPrice" />
+						</div>
+					</div>
+
+					<div class="form-group" style="display: none;">
+						<label class="col-md-2 control-label" for="expectprice">Expect
+							Price</label>
+						<div class="col-md-10">
+							<input id="expectprice"  placeholder="ex. $10.98" ng-model="product.expectPrice" /><span>optional</span>
+						</div>
+					</div>
+
+					<div class="form-group" style="display: none;">
+						<label class="col-md-2 control-label" for="buynowprice">Buy
+							Now Price</label>
+						<div class="col-md-10">
+							<input id="buynowprice"  placeholder="ex. $10.98" ng-model="product.buyNowPrice"/><span>optional</span>
+						</div>
+					</div>
+
+					<div id="endDayForm" class="form-group">
+						<label class="col-md-2 control-label" for="datetimepicker">End Day</label>
+						<div class="col-md-10">
+							<input id="datetimepicker" kendo-date-time-picker required style="width: 153px" ng-model="product.endTime" k-options="dateTimeOptions" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="freeshipping">Free
+							Shipping</label>
+						<div class="col-md-10">
+							<input id="freeshipping" kendo-drop-down-list k-data-text-field="'vendors'" k-data-value-field="'listId'"
+            					k-data-source="shippingType" ng-model="product.shippingType" required style="width: 153px" />
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-xs-offset-3 top20 text-center">
+						<input type="submit" class="btn btn-primary" value="Submit" />
+						<input type="reset" class="btn btn-default" formnovalidate value="Reset" />
+					</div>
+
+				</fieldset>
+			</div>
+		</div>
+	</form>
+</div>

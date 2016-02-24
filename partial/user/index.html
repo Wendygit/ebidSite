@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">User Information</div>
+            <div class="panel-body">
+                <table class="table borderless">
+                    <tr><td>Name</td><td>{{userIndex.user.username}}</td></tr>
+                    <tr><td>Email</td><td>{{userIndex.user.email}}</td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-primary" style="display: none">
+            <div class="panel-heading">Action</div>
+            <div class="panel-body">
+                <div kendo-tree-view="tree"
+                     k-data-source="Actionlist"
+                     k-template="actionTemplate"></div>
+                <script type="text/x-kendo-angular-template" id="actionTemplate">
+                    <span class="{{dataItem.imgIcon}}"></span><a ng-href="{{dataItem.path}}">{{dataItem.name}}</a>
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Selling</div>
+            <div class="panel-body">
+                <div class="row" ng-repeat="product in userIndex.seller">
+                    <div class="col-md-3 padding20">
+                        <div class="UserPageImageBox">
+                            <a href="#/bid/item/{{product.pid}}"><img ng-src="{{product.defaultImage}}" /></a>
+                            <img ng-if="product.status == 2 || product.status == 3" class="bidResult" ng-src="images/imgEnded.png" />
+                        </div>
+                    </div>
+                    <div class="col-md-8 padding20">
+                        <div class="row top20">
+                            <div class="col-md-4 text">Item condition:</div>
+                            <div class="col-md-8">
+                                <b>{{getConditionName(product.condition)}}</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 text">Ended:</div>
+                            <div class="col-md-8">
+                                {{product.endTime | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 text">Price:</div>
+                            <div class="col-md-8">
+                                <b class="pricecurrency">US {{getPriceCurrency(product.currentPrice)}}</b>
+                            </div>
+                        </div>
+                        <div class="row top20"  ng-if="product.status != 2 && product.status != 3">
+                            <div class="pull-right"><button type="button"  class="btn btn-info" ng-click="goToEdit(product.pid)">Edit</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Bidding</div>
+            <div class="panel-body">
+                <div class="row" ng-repeat="product in userIndex.bid">
+                    <div class="col-md-3 padding20">
+                        <div class="UserPageImageBox">
+                            <a href="#/bid/item/{{product.pid}}"><img ng-src="{{product.defaultImage}}" /></a>
+                        </div>
+                    </div>
+                    <div class="col-md-8 padding20">
+                        <div class="row top20">
+                            <div class="col-md-4 text">Item condition:</div>
+                            <div class="col-md-8">
+                                <b>{{getConditionName(product.condition)}}</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 text">Ended:</div>
+                            <div class="col-md-8">
+                                {{product.endTime | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
+                            </div>
+                        </div>
+                        <div class="row" ng-if="product.ProductStatus == 0 || product.ProductStatus == 1">
+                            <div class="col-md-4 text">Current Price:</div>
+                            <div class="col-md-8">
+                                <b class="pricecurrency">US {{getPriceCurrency(product.currentPrice)}}</b>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="product.ProductStatus == 2">
+                            <div class="col-md-4 text">End Price:</div>
+                            <div class="col-md-8">
+                                <b class="pricecurrency">US {{getPriceCurrency(product.currentPrice)}}</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 text">Bid Price:</div>
+                            <div class="col-md-8">
+                                <b class="pricecurrency">US {{getPriceCurrency(product.bidPrice)}}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
